@@ -1,0 +1,116 @@
+@page
+@using CoreFitness.Management.Models
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="hero-band mb-4">
+    <div class="hero-copy">
+        <div class="hero-brand">
+            <img class="hero-logo" src="~/img/core-fitness-logo.png" alt="CORE FITNESS logo" />
+            <div>
+                <h1 class="display-title">CORE FITNESS</h1>
+                <div class="brand-tagline">Built from the core</div>
+            </div>
+        </div>
+        <p class="hero-summary">Performance-focused gym operations in one portal: registrations, fee alerts, WhatsApp reminders, sales, lockers, promotions, and smart door access.</p>
+        <div class="hero-actions">
+            <a class="btn-light-core" asp-page="/Members">Register Member</a>
+            <a class="btn-light-core" asp-page="/POS">Open POS</a>
+            <a class="btn-light-core" asp-page="/Operations">Door Access</a>
+        </div>
+    </div>
+    <div class="metric-grid">
+        <div class="metric-card">
+            <strong>@Model.Store.Members.Count</strong>
+            <span>Members</span>
+        </div>
+        <div class="metric-card">
+            <strong>@Model.Store.ExpiringMembers.Count</strong>
+            <span>Expiry Alerts</span>
+        </div>
+        <div class="metric-card">
+            <strong>@Model.Store.DueMembers.Count</strong>
+            <span>Blocked / Due</span>
+        </div>
+        <div class="metric-card">
+            <strong>@Model.Store.TodaySalesTotal.ToString("N0")</strong>
+            <span>Daily Sales</span>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-grid">
+    <div>
+        <div class="block-head">
+            <h2 class="section-title">Member Fee Control</h2>
+            <a class="text-link" asp-page="/Members">Manage members</a>
+        </div>
+        <div class="table-panel">
+            <table class="core-table">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Plan</th>
+                        <th>Expires</th>
+                        <th>Status</th>
+                        <th>Door</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var member in Model.Store.Members.Take(8))
+                {
+                    <tr>
+                        <td>
+                            <strong>@member.FullName</strong><br>
+                            <span class="muted">@member.MemberCode</span>
+                        </td>
+                        <td>@member.PlanName</td>
+                        <td>@member.FeeExpiresOn.ToString("dd MMM yyyy")</td>
+                        <td><span class="status-pill status-@member.Status.ToString().ToLowerInvariant()">@member.Status</span></td>
+                        <td>
+                            <span class="status-pill @(member.IsEntryAllowed ? "status-active" : "status-expired")">
+                                @(member.IsEntryAllowed ? "Allowed" : "Blocked")
+                            </span>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <aside>
+        <div class="block-head">
+            <h2 class="section-title">Seven Day Alerts</h2>
+            <span class="micro-copy">@Model.Store.ExpiringMembers.Count due soon</span>
+        </div>
+        <div class="panel alert-strip">
+            @if (!Model.Store.ExpiringMembers.Any())
+            {
+                <p class="empty-note mb-0">No fees expiring in the next week.</p>
+            }
+            @foreach (var member in Model.Store.ExpiringMembers)
+            {
+                <div class="alert-row">
+                    <div>
+                        <strong>@member.FullName</strong><br>
+                        <span class="muted">Expires @member.FeeExpiresOn.ToString("dd MMM")</span>
+                    </div>
+                    <a class="btn-ghost" href="@Model.Store.WhatsAppReminderUrl(member)" target="_blank" rel="noreferrer">WhatsApp</a>
+                </div>
+            }
+        </div>
+
+        <div class="block-head mt-4">
+            <h2 class="section-title">Due Fee Report</h2>
+            <a class="text-link" asp-page="/Operations">Open report</a>
+        </div>
+        <div class="panel">
+            <div class="metric-card">
+                <strong>@Model.Store.DueFeesTotal.ToString("N0")</strong>
+                <span>Total due fees</span>
+            </div>
+        </div>
+    </aside>
+</section>

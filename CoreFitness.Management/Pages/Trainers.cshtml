@@ -1,0 +1,77 @@
+@page
+@model TrainersModel
+@{
+    ViewData["Title"] = "Trainers";
+}
+
+<div class="page-head">
+    <div>
+        <p class="eyebrow">Trainer Registration</p>
+        <h1>Training Team</h1>
+    </div>
+</div>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="flash">@message</div>
+}
+
+<section class="two-column">
+    <div>
+        <h2 class="section-title">Trainer Registry</h2>
+        <div class="table-panel">
+            <table class="core-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Specialty</th>
+                        <th>Salary</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var trainer in Model.Store.Trainers)
+                {
+                    <tr>
+                        <td><strong>@trainer.FullName</strong></td>
+                        <td>@trainer.Phone</td>
+                        <td>@trainer.Specialty</td>
+                        <td>@trainer.MonthlySalary.ToString("N0")</td>
+                        <td><span class="status-pill status-active">@(trainer.Active ? "Active" : "Inactive")</span></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <aside class="panel">
+        <h2 class="section-title">Register Trainer</h2>
+        <form class="core-form" method="post" asp-page-handler="Add">
+            <div class="form-field">
+                <label asp-for="Input.FullName">Full Name</label>
+                <input asp-for="Input.FullName" />
+            </div>
+            <div class="form-field">
+                <label asp-for="Input.Phone">Phone</label>
+                <input asp-for="Input.Phone" />
+            </div>
+            <div class="form-field">
+                <label asp-for="Input.Specialty">Specialty</label>
+                <input asp-for="Input.Specialty" />
+            </div>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label asp-for="Input.MonthlySalary">Monthly Salary</label>
+                    <input asp-for="Input.MonthlySalary" type="number" min="0" />
+                </div>
+                <div class="form-field">
+                    <label asp-for="Input.JoinedOn">Joined On</label>
+                    <input asp-for="Input.JoinedOn" type="date" />
+                </div>
+            </div>
+            <button class="btn-core" type="submit">Register Trainer</button>
+        </form>
+    </aside>
+</section>

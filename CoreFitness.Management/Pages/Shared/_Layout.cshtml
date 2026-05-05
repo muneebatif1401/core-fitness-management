@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CORE FITNESS</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CoreFitness.Management.styles.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
+        string Active(string page) => string.Equals(currentPage, page, StringComparison.OrdinalIgnoreCase) ? " active" : string.Empty;
+    }
+    <header>
+        <nav class="navbar navbar-expand-lg portal-nav">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand brand-lockup" asp-page="/Index" aria-label="CORE FITNESS dashboard">
+                    <img src="~/img/core-fitness-logo.png" alt="CORE FITNESS" />
+                    <span class="brand-text">
+                        <strong>CORE</strong>
+                        <small>FITNESS</small>
+                    </span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav ms-auto nav-pills">
+                        <li class="nav-item"><a class="nav-link@(Active("/Index"))" asp-page="/Index">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link@(Active("/Members"))" asp-page="/Members">Members</a></li>
+                        <li class="nav-item"><a class="nav-link@(Active("/Trainers"))" asp-page="/Trainers">Trainers</a></li>
+                        <li class="nav-item"><a class="nav-link@(Active("/POS"))" asp-page="/POS">POS</a></li>
+                        <li class="nav-item"><a class="nav-link@(Active("/Operations"))" asp-page="/Operations">Operations</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="portal-kicker">
+        <div class="portal-kicker-inner">
+            <span>CORE FITNESS OPS</span>
+            <span>Fee control | Sales | Access | Lockers</span>
+        </div>
+    </div>
+    <div class="portal-shell">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <span>CORE FITNESS Management System</span>
+        <span>Built from the core</span>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

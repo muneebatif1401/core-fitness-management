@@ -1,0 +1,192 @@
+@page
+@model OperationsModel
+@{
+    ViewData["Title"] = "Operations";
+}
+
+<div class="page-head">
+    <div>
+        <p class="eyebrow">Lockers, Promotions & Smart Door</p>
+        <h1>Operations</h1>
+    </div>
+    <div class="metric-grid">
+        <div class="metric-card">
+            <strong>@Model.Store.Lockers.Count(l => l.MemberId.HasValue)</strong>
+            <span>Lockers Used</span>
+        </div>
+        <div class="metric-card">
+            <strong>@Model.Store.Promotions.Count(p => p.Active)</strong>
+            <span>Promotions</span>
+        </div>
+    </div>
+</div>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="flash">@message</div>
+}
+
+<section class="operations-top mb-4">
+    <div class="panel">
+        <h2 class="section-title">Smart Door Access System</h2>
+        <form class="core-form" method="post" asp-page-handler="Door">
+            <div class="form-grid">
+                <div class="form-field">
+                    <label asp-for="MemberCode">Member Code</label>
+                    <input asp-for="MemberCode" placeholder="CF-1001" />
+                </div>
+                <div class="form-field d-flex align-items-end">
+                    <button class="btn-core w-100" type="submit">Check Access</button>
+                </div>
+            </div>
+        </form>
+        @if (Model.DoorResult is not null)
+        {
+            <div class="alert-row mt-3">
+                <div>
+                    <strong>@(string.IsNullOrWhiteSpace(Model.DoorResult.MemberName) ? Model.DoorResult.MemberCode : Model.DoorResult.MemberName)</strong><br>
+                    <span class="muted">@Model.DoorResult.Reason</span>
+                </div>
+                <span class="status-pill @(Model.DoorResult.Allowed ? "status-active" : "status-expired")">@(Model.DoorResult.Allowed ? "Allowed" : "Blocked")</span>
+            </div>
+        }
+    </div>
+
+    <aside class="panel">
+        <h2 class="section-title">Due Fee Report</h2>
+        <div class="metric-card">
+            <strong>@Model.Store.DueFeesTotal.ToString("N0")</strong>
+            <span>Outstanding balance</span>
+        </div>
+        <div class="alert-strip mt-3">
+            @foreach (var member in Model.Store.DueMembers)
+            {
+                <div class="alert-row">
+                    <div>
+                        <strong>@member.FullName</strong><br>
+                        <span class="muted">@member.DueAmount.ToString("N0") due</span>
+                    </div>
+                    <span class="status-pill status-expired">@member.Status</span>
+                </div>
+            }
+        </div>
+    </aside>
+</section>
+
+<section class="operations-grid">
+    <div>
+        <h2 class="section-title">Member Locker Management</h2>
+        <div class="table-panel">
+            <table class="core-table">
+                <thead>
+                    <tr>
+                        <th>Locker</th>
+                        <th>Member</th>
+                        <th>Assigned Until</th>
+                        <th>Rent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var locker in Model.Store.Lockers)
+                {
+                    <tr>
+                        <td><strong>@locker.LockerNumber</strong></td>
+                        <td>@Model.Store.MemberName(locker.MemberId)</td>
+                        <td>@(locker.AssignedUntil?.ToString("dd MMM yyyy") ?? "-")</td>
+                        <td>@locker.MonthlyRent.ToString("N0")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="promotion-row">
+            <div>
+                <h2 class="section-title mt-4">Promotion Plans</h2>
+                <div class="table-panel">
+                    <table class="core-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Discount</th>
+                                <th>Dates</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var promotion in Model.Store.Promotions)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@promotion.Name</strong><br>
+                                    <span class="muted">@promotion.Description</span>
+                                </td>
+                                <td>@promotion.DiscountPercent.ToString("N0")%</td>
+                                <td>@promotion.StartsOn.ToString("dd MMM") - @promotion.EndsOn.ToString("dd MMM yyyy")</td>
+                                <td><span class="status-pill status-active">@(promotion.Active ? "Active" : "Paused")</span></td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <aside class="side-stack">
+        <div class="panel">
+            <h2 class="section-title">Assign Locker</h2>
+            <form class="core-form" method="post" asp-page-handler="AssignLocker">
+                <div class="form-field">
+                    <label asp-for="LockerId">Locker</label>
+                    <select asp-for="LockerId">
+                        @foreach (var locker in Model.Store.Lockers)
+                        {
+                            <option value="@locker.Id">@locker.LockerNumber</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label asp-for="LockerMemberId">Member</label>
+                    <select asp-for="LockerMemberId">
+                        <option value="">Available</option>
+                        @foreach (var member in Model.Store.Members)
+                        {
+                            <option value="@member.Id">@member.FullName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label asp-for="AssignedUntil">Assigned Until</label>
+                    <input asp-for="AssignedUntil" type="date" />
+                </div>
+                <button class="btn-core" type="submit">Update Locker</button>
+            </form>
+        </div>
+
+        <div class="panel">
+            <h2 class="section-title">Add Promotion</h2>
+            <form class="core-form" method="post" asp-page-handler="AddPromotion">
+                <div class="form-field">
+                    <label asp-for="PromotionInput.Name">Name</label>
+                    <input asp-for="PromotionInput.Name" />
+                </div>
+                <div class="form-field">
+                    <label asp-for="PromotionInput.Description">Description</label>
+                    <textarea asp-for="PromotionInput.Description"></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label asp-for="PromotionInput.DiscountPercent">Discount %</label>
+                        <input asp-for="PromotionInput.DiscountPercent" type="number" min="0" max="100" />
+                    </div>
+                    <div class="form-field">
+                        <label asp-for="PromotionInput.EndsOn">Ends On</label>
+                        <input asp-for="PromotionInput.EndsOn" type="date" />
+                    </div>
+                </div>
+                <button class="btn-core" type="submit">Add Promotion</button>
+            </form>
+        </div>
+    </aside>
+</section>

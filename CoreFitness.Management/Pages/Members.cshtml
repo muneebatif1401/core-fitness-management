@@ -1,0 +1,110 @@
+@page
+@model MembersModel
+@{
+    ViewData["Title"] = "Members";
+}
+
+<div class="page-head">
+    <div>
+        <p class="eyebrow">Member Registration System</p>
+        <h1>Members</h1>
+    </div>
+    <a class="btn-core" asp-page="/Operations">Check Door Access</a>
+</div>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="flash">@message</div>
+}
+
+<section class="two-column">
+    <div>
+        <h2 class="section-title">Active Registry</h2>
+        <div class="table-panel">
+            <table class="core-table">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Phone</th>
+                        <th>Fee Expiry</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var member in Model.Store.Members)
+                {
+                    <tr>
+                        <td>
+                            <strong>@member.FullName</strong><br>
+                            <span class="muted">@member.MemberCode | @member.PlanName</span>
+                        </td>
+                        <td>@member.Phone</td>
+                        <td>@member.FeeExpiresOn.ToString("dd MMM yyyy")</td>
+                        <td><span class="status-pill status-@member.Status.ToString().ToLowerInvariant()">@member.Status</span></td>
+                        <td>
+                            <div class="actions">
+                                <form method="post" asp-page-handler="Renew">
+                                    <input type="hidden" name="id" value="@member.Id" />
+                                    <input type="hidden" name="months" value="1" />
+                                    <button class="btn-ghost" type="submit">Renew</button>
+                                </form>
+                                <form method="post" asp-page-handler="ToggleBlock">
+                                    <input type="hidden" name="id" value="@member.Id" />
+                                    <button class="btn-ghost" type="submit">@(member.ManualBlock ? "Unblock" : "Block")</button>
+                                </form>
+                                <a class="btn-ghost" href="@Model.Store.WhatsAppReminderUrl(member)" target="_blank" rel="noreferrer">WhatsApp</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <aside class="panel">
+        <h2 class="section-title">Register Member</h2>
+        <form class="core-form" method="post" asp-page-handler="Add">
+            <div class="form-field">
+                <label asp-for="Input.FullName">Full Name</label>
+                <input asp-for="Input.FullName" />
+            </div>
+            <div class="form-field">
+                <label asp-for="Input.Phone">WhatsApp Phone</label>
+                <input asp-for="Input.Phone" placeholder="923001234567" />
+            </div>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label asp-for="Input.PlanName">Plan</label>
+                    <input asp-for="Input.PlanName" value="Monthly" />
+                </div>
+                <div class="form-field">
+                    <label asp-for="Input.MonthlyFee">Fee</label>
+                    <input asp-for="Input.MonthlyFee" type="number" min="0" />
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label asp-for="Input.JoinedOn">Joined On</label>
+                    <input asp-for="Input.JoinedOn" type="date" />
+                </div>
+                <div class="form-field">
+                    <label asp-for="Input.FeeExpiresOn">Fee Expires On</label>
+                    <input asp-for="Input.FeeExpiresOn" type="date" />
+                </div>
+            </div>
+            <div class="form-field">
+                <label asp-for="Input.AssignedTrainer">Assigned Trainer</label>
+                <select asp-for="Input.AssignedTrainer">
+                    <option value="">No trainer</option>
+                    @foreach (var trainer in Model.Store.Trainers)
+                    {
+                        <option value="@trainer.FullName">@trainer.FullName</option>
+                    }
+                </select>
+            </div>
+            <button class="btn-core" type="submit">Register Member</button>
+        </form>
+    </aside>
+</section>

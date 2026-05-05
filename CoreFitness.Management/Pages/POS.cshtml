@@ -1,0 +1,101 @@
+@page
+@model POSModel
+@{
+    ViewData["Title"] = "POS";
+}
+
+<div class="page-head">
+    <div>
+        <p class="eyebrow">Gym POS System</p>
+        <h1>Sales & Inventory</h1>
+    </div>
+    <div class="metric-card">
+        <strong>@Model.Store.TodaySalesTotal.ToString("N0")</strong>
+        <span>Daily sales report</span>
+    </div>
+</div>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="flash">@message</div>
+}
+
+<section class="two-column">
+    <div>
+        <h2 class="section-title">Product Inventory</h2>
+        <div class="table-panel">
+            <table class="core-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var product in Model.Store.Products)
+                {
+                    <tr>
+                        <td><strong>@product.Name</strong></td>
+                        <td>@product.Category</td>
+                        <td>@product.Price.ToString("N0")</td>
+                        <td>@product.Stock</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title mt-4">Recent Sales</h2>
+        <div class="table-panel">
+            <table class="core-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var sale in Model.Store.Sales.Take(10))
+                {
+                    <tr>
+                        <td>@sale.SoldAt.ToString("dd MMM, hh:mm tt")</td>
+                        <td>@sale.ProductName</td>
+                        <td>@sale.Quantity</td>
+                        <td>@sale.Total.ToString("N0")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <aside class="panel">
+        <h2 class="section-title">Record Sale</h2>
+        <form class="core-form" method="post" asp-page-handler="Sell">
+            <div class="form-field">
+                <label asp-for="ProductId">Product</label>
+                <select asp-for="ProductId">
+                    @foreach (var product in Model.Store.Products)
+                    {
+                        <option value="@product.Id">@product.Name - @product.Price.ToString("N0")</option>
+                    }
+                </select>
+            </div>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label asp-for="Quantity">Quantity</label>
+                    <input asp-for="Quantity" type="number" min="1" />
+                </div>
+                <div class="form-field">
+                    <label asp-for="SoldBy">Sold By</label>
+                    <input asp-for="SoldBy" />
+                </div>
+            </div>
+            <button class="btn-core" type="submit">Complete Sale</button>
+        </form>
+    </aside>
+</section>

@@ -1,0 +1,27 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build output
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.cache
+
+# Local app data
+**/App_Data/*.json
+!**/App_Data/.gitkeep
+
+# OS files
+Thumbs.db
+.DS_Store
