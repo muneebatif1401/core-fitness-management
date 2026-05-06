@@ -460,16 +460,21 @@ h3 {
   align-items: start;
 }
 
+.operations-page {
+  width: min(1320px, 100%);
+  margin: 0 auto;
+}
+
 .operations-top {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(360px, .34fr);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, .32fr);
   gap: 24px;
   align-items: start;
 }
 
 .operations-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(360px, .34fr);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, .32fr);
   gap: 24px;
   align-items: start;
 }

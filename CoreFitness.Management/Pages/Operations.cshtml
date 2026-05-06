@@ -4,29 +4,30 @@
     ViewData["Title"] = "Operations";
 }
 
-<div class="page-head">
-    <div>
-        <p class="eyebrow">Lockers, Promotions & Smart Door</p>
-        <h1>Operations</h1>
-    </div>
-    <div class="metric-grid">
-        <div class="metric-card">
-            <strong>@Model.Store.Lockers.Count(l => l.MemberId.HasValue)</strong>
-            <span>Lockers Used</span>
+<div class="operations-page">
+    <div class="page-head">
+        <div>
+            <p class="eyebrow">Lockers, Promotions & Smart Door</p>
+            <h1>Operations</h1>
         </div>
-        <div class="metric-card">
-            <strong>@Model.Store.Promotions.Count(p => p.Active)</strong>
-            <span>Promotions</span>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <strong>@Model.Store.Lockers.Count(l => l.MemberId.HasValue)</strong>
+                <span>Lockers Used</span>
+            </div>
+            <div class="metric-card">
+                <strong>@Model.Store.Promotions.Count(p => p.Active)</strong>
+                <span>Promotions</span>
+            </div>
         </div>
     </div>
-</div>
 
-@if (TempData["Message"] is string message)
-{
-    <div class="flash">@message</div>
-}
+    @if (TempData["Message"] is string message)
+    {
+        <div class="flash">@message</div>
+    }
 
-<section class="operations-top mb-4">
+    <section class="operations-top mb-4">
     <div class="panel">
         <h2 class="section-title">Smart Door Access System</h2>
         <form class="core-form" method="post" asp-page-handler="Door">
@@ -73,7 +74,7 @@
     </aside>
 </section>
 
-<section class="operations-grid">
+    <section class="operations-grid">
     <div>
         <h2 class="section-title">Member Locker Management</h2>
         <div class="table-panel">
@@ -189,4 +190,5 @@
             </form>
         </div>
     </aside>
-</section>
+    </section>
+</div>
