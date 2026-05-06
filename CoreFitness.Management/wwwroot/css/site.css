@@ -273,9 +273,10 @@ h3 {
 .hero-band {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
-  min-height: auto;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  align-items: center;
+  gap: clamp(22px, 3vw, 42px);
+  min-height: 455px;
   margin-bottom: 24px;
   padding: clamp(28px, 4vw, 54px);
   overflow: hidden;
@@ -290,11 +291,6 @@ h3 {
 
 .hero-band .metric-grid {
   min-width: 0;
-  margin-top: 8px;
-  padding: 16px;
-  background: rgba(0, 0, 0, .22);
-  border: 1px solid rgba(255, 255, 255, .08);
-  border-radius: 8px;
 }
 
 .hero-band::after {
@@ -314,7 +310,7 @@ h3 {
 }
 
 .hero-copy {
-  align-self: start;
+  align-self: center;
 }
 
 .hero-brand {
@@ -377,7 +373,7 @@ h3 {
 
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   align-content: end;
 }
@@ -403,11 +399,12 @@ h3 {
 }
 
 .hero-band .metric-card {
-  min-height: 112px;
+  min-height: 104px;
+  padding: 16px;
   color: var(--core-paper);
-  background: rgba(42, 42, 44, .96);
+  background: rgba(255, 255, 255, .105);
   border-color: rgba(255, 255, 255, .2);
-  backdrop-filter: none;
+  backdrop-filter: blur(10px);
 }
 
 .page-head .metric-card {
@@ -687,6 +684,11 @@ h3 {
 }
 
 @media (max-width: 1080px) {
+  .hero-band {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
   .dashboard-grid,
   .two-column,
   .operations-top,
