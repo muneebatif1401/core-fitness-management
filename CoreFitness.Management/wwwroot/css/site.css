@@ -162,6 +162,9 @@ textarea {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+  position: static !important;
+  bottom: auto !important;
+  width: auto !important;
   margin-left: 12px;
   padding: 24px 30px;
   color: #707074;
@@ -169,6 +172,8 @@ textarea {
   border-top: 1px solid var(--core-line);
   font-size: .84rem;
   font-weight: 700;
+  line-height: normal !important;
+  white-space: normal !important;
 }
 
 .page-head {
