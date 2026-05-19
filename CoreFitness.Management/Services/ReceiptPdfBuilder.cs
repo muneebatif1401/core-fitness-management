@@ -52,14 +52,13 @@ public static class ReceiptPdfBuilder
         var id = sale.Id.ToString()[..8].ToUpperInvariant();
         var builder = new StringBuilder();
 
-        builder.AppendLine("0.012 0.012 0.012 rg 0 0 612 792 re f");
-        builder.AppendLine("0.055 0.055 0.055 rg 96 76 420 640 re f");
-        builder.AppendLine("0.608 0.824 0.165 RG 1.5 w 96 76 420 640 re S");
-        builder.AppendLine("0.608 0.824 0.165 rg 96 676 420 40 re f");
+        builder.AppendLine("1 1 1 rg 0 0 612 792 re f");
+        builder.AppendLine("0 0 0 RG 1 w 96 76 420 640 re S");
+        builder.AppendLine("0 0 0 RG 1.5 w 126 674 m 486 674 l S");
 
-        Text(builder, "CORE FITNESS", 126, 686, 24, "F2", "0.02 0.02 0.02");
-        Text(builder, $"{sale.Outlet.ToUpperInvariant()} RECEIPT", 126, 652, 13, "F2", "0.608 0.824 0.165");
-        Text(builder, $"#{id}", 438, 652, 13, "F2", "0.95 0.92 0.84");
+        Text(builder, "CORE FITNESS", 126, 692, 24, "F2", "0 0 0");
+        Text(builder, $"{sale.Outlet.ToUpperInvariant()} RECEIPT", 126, 652, 13, "F2", "0 0 0");
+        Text(builder, $"#{id}", 486, 652, 13, "F2", "0 0 0", alignRight: true);
 
         Line(builder, 126, 626, 486, 626);
         Row(builder, "Date", sale.SoldAt.ToString("dd MMM yyyy hh:mm tt", CultureInfo.InvariantCulture), 596);
@@ -70,25 +69,25 @@ public static class ReceiptPdfBuilder
         Row(builder, "Sold By", sale.SoldBy, 416);
 
         Line(builder, 126, 384, 486, 384);
-        Text(builder, "TOTAL", 126, 344, 14, "F2", "0.608 0.824 0.165");
-        Text(builder, sale.Total.ToString("N0", CultureInfo.InvariantCulture), 486, 344, 28, "F2", "0.608 0.824 0.165", alignRight: true);
+        Text(builder, "TOTAL", 126, 344, 14, "F2", "0 0 0");
+        Text(builder, sale.Total.ToString("N0", CultureInfo.InvariantCulture), 486, 344, 28, "F2", "0 0 0", alignRight: true);
 
-        builder.AppendLine("0.608 0.824 0.165 rg 126 292 360 34 re f");
-        Text(builder, "THANK YOU FOR CHOOSING CORE FITNESS", 145, 304, 11, "F2", "0.02 0.02 0.02");
-        Text(builder, "This PDF mirrors the portal bill style for printing or saving.", 126, 246, 10, "F1", "0.74 0.70 0.62");
+        Line(builder, 126, 292, 486, 292);
+        Text(builder, "THANK YOU FOR CHOOSING CORE FITNESS", 126, 264, 11, "F2", "0 0 0");
+        Text(builder, "Ink-friendly bill copy for printing or saving.", 126, 246, 10, "F1", "0.28 0.28 0.28");
 
         return builder.ToString();
     }
 
     private static void Row(StringBuilder builder, string label, string value, int y)
     {
-        Text(builder, label.ToUpperInvariant(), 126, y, 10, "F2", "0.74 0.70 0.62");
-        Text(builder, value, 486, y, 12, "F2", "0.95 0.92 0.84", alignRight: true);
+        Text(builder, label.ToUpperInvariant(), 126, y, 10, "F2", "0.22 0.22 0.22");
+        Text(builder, value, 486, y, 12, "F2", "0 0 0", alignRight: true);
     }
 
     private static void Line(StringBuilder builder, int x1, int y1, int x2, int y2)
     {
-        builder.Append("0.19 0.17 0.13 RG 1 w ")
+        builder.Append("0 0 0 RG 0.75 w ")
             .Append(x1).Append(' ').Append(y1).Append(" m ")
             .Append(x2).Append(' ').Append(y2).AppendLine(" l S");
     }
