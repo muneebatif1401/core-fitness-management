@@ -830,7 +830,7 @@ h3 {
   }
 }
 
-/* CORE FITNESS editorial dark theme */
+/* CORE FITNESS neon fitness club theme */
 :root {
   --core-black: #050505;
   --core-deep: #0a0a0a;
@@ -840,16 +840,17 @@ h3 {
   --core-paper: #111111;
   --core-soft: #171717;
   --core-soft-2: #211f1d;
-  --core-yellow: #edcc36;
-  --core-yellow-dark: #c79f18;
+  --core-yellow: #9bd22a;
+  --core-yellow-dark: #74a71d;
+  --core-green-glow: rgba(155, 210, 42, .22);
   --shadow: 0 30px 80px rgba(0, 0, 0, .42);
 }
 
 body {
   color: #f4f1e8;
   background:
-    linear-gradient(90deg, rgba(237, 204, 54, .06) 0 1px, transparent 1px 92px),
-    radial-gradient(circle at 50% 0, rgba(237, 204, 54, .08), transparent 34%),
+    linear-gradient(90deg, rgba(155, 210, 42, .055) 0 1px, transparent 1px 92px),
+    radial-gradient(circle at 50% 0, rgba(155, 210, 42, .12), transparent 34%),
     #030303;
 }
 
@@ -926,7 +927,7 @@ body::before {
 
 .page-head {
   background:
-    linear-gradient(135deg, rgba(237, 204, 54, .1), transparent 36%),
+    linear-gradient(135deg, rgba(155, 210, 42, .15), transparent 36%),
     #090909;
   border-color: #27231c;
   box-shadow: var(--shadow);
@@ -961,18 +962,18 @@ h3,
 .hero-band {
   background:
     linear-gradient(105deg, rgba(0, 0, 0, .98), rgba(18, 18, 18, .92)),
-    linear-gradient(90deg, rgba(237, 204, 54, .06) 0 1px, transparent 1px 84px),
+    linear-gradient(90deg, rgba(155, 210, 42, .07) 0 1px, transparent 1px 84px),
     #030303;
   border: 1px solid #252017;
   box-shadow: var(--shadow);
 }
 
 .hero-band::after {
-  border-color: rgba(237, 204, 54, .14);
+  border-color: rgba(155, 210, 42, .18);
 }
 
 .hero-logo {
-  border-color: rgba(237, 204, 54, .35);
+  border-color: rgba(155, 210, 42, .45);
 }
 
 .brand-tagline {
@@ -1001,8 +1002,8 @@ h3,
 .btn-light-core:hover,
 .btn-light-core:focus {
   color: #050505;
-  background: #ffd93e;
-  border-color: #ffd93e;
+  background: #b7f13a;
+  border-color: #b7f13a;
 }
 
 .btn-ghost {
@@ -1030,8 +1031,8 @@ h3,
 
 .hero-band .metric-card,
 .page-head .metric-card {
-  background: rgba(237, 204, 54, .12);
-  border-color: rgba(237, 204, 54, .34);
+  background: rgba(155, 210, 42, .13);
+  border-color: rgba(155, 210, 42, .36);
 }
 
 .metric-card strong,
@@ -1093,7 +1094,7 @@ h3,
 .form-field textarea:focus {
   background: #0d0d0d;
   border-color: var(--core-yellow);
-  box-shadow: 0 0 0 3px rgba(237, 204, 54, .16);
+  box-shadow: 0 0 0 3px rgba(155, 210, 42, .18);
 }
 
 .alert-row,
@@ -1157,7 +1158,7 @@ h3,
 .login-brand img {
   width: 180px;
   margin-bottom: 28px;
-  border: 1px solid rgba(237, 204, 54, .35);
+  border: 1px solid rgba(155, 210, 42, .45);
   border-radius: 8px;
 }
 
@@ -1335,7 +1336,9 @@ h3,
 
 @media print {
   body {
-    background: #fff;
+    background: #030303 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   header,
@@ -1351,16 +1354,23 @@ h3,
   }
 
   .receipt-card {
-    color: #111;
-    background: #fff;
-    border: 0;
+    color: #f4f1e8;
+    background: #090909 !important;
+    border: 1px solid #9bd22a;
     box-shadow: none;
   }
 
   .receipt-brand h1,
   .receipt-total strong,
   .receipt-list dd {
-    color: #111;
+    color: #f4f1e8;
+  }
+
+  .receipt-brand span,
+  .receipt-meta span,
+  .receipt-total span,
+  .receipt-total strong {
+    color: #9bd22a !important;
   }
 }
 
