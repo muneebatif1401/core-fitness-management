@@ -1,0 +1,77 @@
+@page
+@model FuelBarModel
+@{
+    ViewData["Title"] = "Fuel Bar POS";
+}
+
+<div class="page-head fuelbar-head">
+    <div>
+        <p class="eyebrow">Fuel Bar POS</p>
+        <h1>Fuel Bar</h1>
+    </div>
+    <div class="metric-card">
+        <strong>@Model.Store.TodayFuelBarSalesTotal.ToString("N0")</strong>
+        <span>Today fuel bar sales</span>
+    </div>
+</div>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="flash">@message</div>
+}
+
+<section class="fuel-pos-grid">
+    <div>
+        <h2 class="section-title">Quick Sale</h2>
+        <div class="fuel-products">
+            @foreach (var product in Model.Store.FuelBarProducts)
+            {
+                <form class="fuel-product-card" method="post" asp-page-handler="Sell">
+                    <input type="hidden" name="ProductId" value="@product.Id" />
+                    <div>
+                        <span>@product.Category</span>
+                        <strong>@product.Name</strong>
+                        <small>@product.Stock in stock</small>
+                    </div>
+                    <div class="fuel-price">@product.Price.ToString("N0")</div>
+                    <div class="fuel-card-actions">
+                        <input name="Quantity" type="number" min="1" value="1" />
+                        <select name="PaymentMethod">
+                            <option>Cash</option>
+                            <option>Card</option>
+                            <option>Bank Transfer</option>
+                        </select>
+                        <button class="btn-core" type="submit">Bill</button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+
+    <aside>
+        <h2 class="section-title">Recent Fuel Bar Bills</h2>
+        <div class="table-panel">
+            <table class="core-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Item</th>
+                        <th>Total</th>
+                        <th>Receipt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var sale in Model.Store.FuelBarSales.Take(12))
+                {
+                    <tr>
+                        <td>@sale.SoldAt.ToString("hh:mm tt")</td>
+                        <td>@sale.ProductName x @sale.Quantity</td>
+                        <td>@sale.Total.ToString("N0")</td>
+                        <td><a class="text-link" asp-page="/Receipt" asp-route-id="@sale.Id">Open</a></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </aside>
+</section>

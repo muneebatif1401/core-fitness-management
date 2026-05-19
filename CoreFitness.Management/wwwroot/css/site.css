@@ -1128,3 +1128,255 @@ h3,
 .operations-page {
   width: min(1400px, 100%);
 }
+
+.logout-link {
+  border: 0;
+}
+
+.login-screen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, .42fr);
+  gap: 32px;
+  min-height: 68vh;
+  align-items: center;
+}
+
+.login-brand,
+.login-card,
+.receipt-card {
+  border: 1px solid #29251e;
+  border-radius: 8px;
+  background: #090909;
+  box-shadow: var(--shadow);
+}
+
+.login-brand {
+  padding: clamp(32px, 5vw, 72px);
+}
+
+.login-brand img {
+  width: 180px;
+  margin-bottom: 28px;
+  border: 1px solid rgba(237, 204, 54, .35);
+  border-radius: 8px;
+}
+
+.login-brand h1 {
+  color: #fff;
+  font-family: Impact, "Arial Narrow", "Montserrat", sans-serif;
+  font-size: clamp(4rem, 9vw, 9rem);
+  line-height: .86;
+}
+
+.login-brand p {
+  max-width: 680px;
+  color: #d8d0bf;
+}
+
+.login-card {
+  padding: 28px;
+}
+
+.login-error {
+  padding: 12px;
+  color: #fff;
+  background: #b42318;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.login-hint {
+  color: #bfb7a7;
+  font-size: .82rem;
+  line-height: 1.7;
+}
+
+.fuel-pos-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, .42fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.fuel-products {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.fuel-product-card {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  background: #0f0f0f;
+  border: 1px solid #29251e;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.fuel-product-card span,
+.fuel-product-card small {
+  color: #bfb7a7;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.fuel-product-card strong {
+  display: block;
+  margin: 8px 0;
+  color: #fff;
+  font-family: Impact, "Arial Narrow", "Montserrat", sans-serif;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.fuel-price {
+  color: var(--core-yellow);
+  font-family: Impact, "Arial Narrow", "Montserrat", sans-serif;
+  font-size: 2.4rem;
+}
+
+.fuel-card-actions {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 10px;
+}
+
+.fuel-card-actions input,
+.fuel-card-actions select {
+  min-height: 46px;
+  color: #f4f1e8;
+  background: #080808;
+  border: 1px solid #37322a;
+  border-radius: 4px;
+  padding: .65rem;
+}
+
+.receipt-shell {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+}
+
+.receipt-card {
+  width: min(460px, 100%);
+  padding: 28px;
+}
+
+.receipt-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #312b20;
+}
+
+.receipt-brand img {
+  width: 74px;
+  border-radius: 6px;
+}
+
+.receipt-brand h1 {
+  margin: 0;
+  color: #fff;
+  font-family: Impact, "Arial Narrow", "Montserrat", sans-serif;
+  letter-spacing: 1px;
+}
+
+.receipt-brand span,
+.receipt-meta span,
+.receipt-total span {
+  color: var(--core-yellow);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.receipt-meta,
+.receipt-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid #312b20;
+}
+
+.receipt-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.receipt-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.receipt-list dt {
+  color: #bfb7a7;
+  font-weight: 800;
+}
+
+.receipt-list dd {
+  margin: 0;
+  text-align: right;
+}
+
+.receipt-total strong {
+  color: var(--core-yellow);
+  font-size: 2rem;
+}
+
+.receipt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  header,
+  .portal-kicker,
+  .footer,
+  .receipt-actions {
+    display: none !important;
+  }
+
+  .portal-shell {
+    width: 100%;
+    padding: 0;
+  }
+
+  .receipt-card {
+    color: #111;
+    background: #fff;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .receipt-brand h1,
+  .receipt-total strong,
+  .receipt-list dd {
+    color: #111;
+  }
+}
+
+@media (max-width: 980px) {
+  .login-screen,
+  .fuel-pos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fuel-products {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .fuel-card-actions {
+    grid-template-columns: 1fr;
+  }
+}

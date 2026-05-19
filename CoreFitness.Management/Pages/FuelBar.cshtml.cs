@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoreFitness.Management.Pages;
 
-[Authorize(Roles = "Admin")]
-public sealed class POSModel(GymStore store) : PageModel
+[Authorize(Roles = "Admin,FuelBar")]
+public sealed class FuelBarModel(GymStore store) : PageModel
 {
     public GymStore Store { get; } = store;
 
@@ -17,9 +17,6 @@ public sealed class POSModel(GymStore store) : PageModel
     public int Quantity { get; set; } = 1;
 
     [BindProperty]
-    public string SoldBy { get; set; } = "Front Desk";
-
-    [BindProperty]
     public string PaymentMethod { get; set; } = "Cash";
 
     public void OnGet()
@@ -28,7 +25,8 @@ public sealed class POSModel(GymStore store) : PageModel
 
     public IActionResult OnPostSell()
     {
-        var result = Store.RecordSale(ProductId, Quantity, SoldBy, "Reception", PaymentMethod);
+        var soldBy = User.Identity?.Name ?? "Fuel Bar";
+        var result = Store.RecordSale(ProductId, Quantity, soldBy, "FuelBar", PaymentMethod);
         if (result.Success && result.SaleId.HasValue)
         {
             return RedirectToPage("/Receipt", new { id = result.SaleId.Value, print = true });

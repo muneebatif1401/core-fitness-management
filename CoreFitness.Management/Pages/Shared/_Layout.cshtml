@@ -33,11 +33,23 @@
                 </button>
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav ms-auto nav-pills">
-                        <li class="nav-item"><a class="nav-link@(Active("/Index"))" asp-page="/Index">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link@(Active("/Members"))" asp-page="/Members">Members</a></li>
-                        <li class="nav-item"><a class="nav-link@(Active("/Trainers"))" asp-page="/Trainers">Trainers</a></li>
-                        <li class="nav-item"><a class="nav-link@(Active("/POS"))" asp-page="/POS">POS</a></li>
-                        <li class="nav-item"><a class="nav-link@(Active("/Operations"))" asp-page="/Operations">Operations</a></li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link@(Active("/Index"))" asp-page="/Index">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link@(Active("/Members"))" asp-page="/Members">Members</a></li>
+                            <li class="nav-item"><a class="nav-link@(Active("/Trainers"))" asp-page="/Trainers">Trainers</a></li>
+                            <li class="nav-item"><a class="nav-link@(Active("/POS"))" asp-page="/POS">Reception POS</a></li>
+                            <li class="nav-item"><a class="nav-link@(Active("/Operations"))" asp-page="/Operations">Operations</a></li>
+                        }
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item"><a class="nav-link@(Active("/FuelBar"))" asp-page="/FuelBar">Fuel Bar</a></li>
+                            <li class="nav-item">
+                                <form method="post" asp-page="/Login" asp-page-handler="Logout">
+                                    <button class="nav-link logout-link" type="submit">@User.Identity.Name Logout</button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -47,7 +59,7 @@
     <div class="portal-kicker">
         <div class="portal-kicker-inner">
             <span>CORE FITNESS OPS</span>
-            <span>Fee control | Sales | Access | Lockers</span>
+            <span>Fee control | Sales | Access | Lockers | Fuel Bar</span>
         </div>
     </div>
     <div class="portal-shell">

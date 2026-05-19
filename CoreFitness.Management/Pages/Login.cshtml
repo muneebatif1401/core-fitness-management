@@ -1,0 +1,35 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<section class="login-screen">
+    <div class="login-brand">
+        <img src="~/img/core-fitness-logo.png" alt="CORE FITNESS" />
+        <p class="eyebrow">Secure Portal</p>
+        <h1>CORE FITNESS</h1>
+        <p>Owner management and fuel bar billing access for the front desk team.</p>
+    </div>
+
+    <form class="login-card" method="post">
+        <h2 class="section-title">Sign In</h2>
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="login-error">@Model.ErrorMessage</div>
+        }
+        <div class="form-field">
+            <label asp-for="Username">Username</label>
+            <input asp-for="Username" autocomplete="username" autofocus />
+        </div>
+        <div class="form-field">
+            <label asp-for="Password">Password</label>
+            <input asp-for="Password" type="password" autocomplete="current-password" />
+        </div>
+        <button class="btn-core" type="submit">Login</button>
+        <div class="login-hint">
+            <strong>Owner:</strong> admin / admin123<br />
+            <strong>Fuel Bar:</strong> fuelbar / fuel123
+        </div>
+    </form>
+</section>

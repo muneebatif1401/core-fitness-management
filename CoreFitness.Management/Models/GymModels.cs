@@ -75,6 +75,7 @@ public sealed class Product
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;
+    public string Outlet { get; set; } = "Reception";
     public decimal Price { get; set; }
     public int Stock { get; set; }
 }
@@ -88,8 +89,12 @@ public sealed class Sale
     public decimal UnitPrice { get; set; }
     public DateTime SoldAt { get; set; } = DateTime.Now;
     public string SoldBy { get; set; } = "Front Desk";
+    public string Outlet { get; set; } = "Reception";
+    public string PaymentMethod { get; set; } = "Cash";
     public decimal Total => Quantity * UnitPrice;
 }
+
+public sealed record SaleResult(bool Success, string Message, Guid? SaleId);
 
 public sealed class PromotionPlan
 {

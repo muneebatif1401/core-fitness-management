@@ -1,0 +1,52 @@
+@page
+@model ReceiptModel
+@{
+    ViewData["Title"] = "Receipt";
+    var sale = Model.Sale!;
+}
+
+<section class="receipt-shell">
+    <div class="receipt-card" id="receipt">
+        <div class="receipt-brand">
+            <img src="~/img/core-fitness-logo.png" alt="CORE FITNESS" />
+            <div>
+                <h1>CORE FITNESS</h1>
+                <span>@sale.Outlet Receipt</span>
+            </div>
+        </div>
+
+        <div class="receipt-meta">
+            <span>Receipt</span>
+            <strong>@sale.Id.ToString()[..8].ToUpperInvariant()</strong>
+        </div>
+
+        <dl class="receipt-list">
+            <div><dt>Date</dt><dd>@sale.SoldAt.ToString("dd MMM yyyy hh:mm tt")</dd></div>
+            <div><dt>Item</dt><dd>@sale.ProductName</dd></div>
+            <div><dt>Quantity</dt><dd>@sale.Quantity</dd></div>
+            <div><dt>Unit Price</dt><dd>@sale.UnitPrice.ToString("N0")</dd></div>
+            <div><dt>Payment</dt><dd>@sale.PaymentMethod</dd></div>
+            <div><dt>Sold By</dt><dd>@sale.SoldBy</dd></div>
+        </dl>
+
+        <div class="receipt-total">
+            <span>Total</span>
+            <strong>@sale.Total.ToString("N0")</strong>
+        </div>
+
+        <p>Thank you for choosing CORE FITNESS.</p>
+    </div>
+
+    <div class="receipt-actions">
+        <button class="btn-core" type="button" onclick="window.print()">Print Bill</button>
+        <a class="btn-ghost" asp-page-handler="Pdf" asp-route-id="@sale.Id">Download PDF</a>
+        <a class="btn-ghost" asp-page="@(sale.Outlet == "FuelBar" ? "/FuelBar" : "/POS")">Back to POS</a>
+    </div>
+</section>
+
+@if (Model.AutoPrint)
+{
+    <script>
+        window.addEventListener("load", () => setTimeout(() => window.print(), 300));
+    </script>
+}

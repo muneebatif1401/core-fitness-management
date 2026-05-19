@@ -10,8 +10,8 @@
         <h1>Sales & Inventory</h1>
     </div>
     <div class="metric-card">
-        <strong>@Model.Store.TodaySalesTotal.ToString("N0")</strong>
-        <span>Daily sales report</span>
+        <strong>@Model.Store.TodayReceptionSalesTotal.ToString("N0")</strong>
+        <span>Reception sales report</span>
     </div>
 </div>
 
@@ -34,7 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach (var product in Model.Store.Products)
+                @foreach (var product in Model.Store.ReceptionProducts)
                 {
                     <tr>
                         <td><strong>@product.Name</strong></td>
@@ -59,13 +59,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach (var sale in Model.Store.Sales.Take(10))
+                @foreach (var sale in Model.Store.ReceptionSales.Take(10))
                 {
                     <tr>
                         <td>@sale.SoldAt.ToString("dd MMM, hh:mm tt")</td>
                         <td>@sale.ProductName</td>
                         <td>@sale.Quantity</td>
-                        <td>@sale.Total.ToString("N0")</td>
+                        <td>
+                            @sale.Total.ToString("N0")<br>
+                            <a class="text-link" asp-page="/Receipt" asp-route-id="@sale.Id">Receipt</a>
+                        </td>
                     </tr>
                 }
                 </tbody>
@@ -79,7 +82,7 @@
             <div class="form-field">
                 <label asp-for="ProductId">Product</label>
                 <select asp-for="ProductId">
-                    @foreach (var product in Model.Store.Products)
+                    @foreach (var product in Model.Store.ReceptionProducts)
                     {
                         <option value="@product.Id">@product.Name - @product.Price.ToString("N0")</option>
                     }
@@ -94,6 +97,14 @@
                     <label asp-for="SoldBy">Sold By</label>
                     <input asp-for="SoldBy" />
                 </div>
+            </div>
+            <div class="form-field">
+                <label asp-for="PaymentMethod">Payment Method</label>
+                <select asp-for="PaymentMethod">
+                    <option>Cash</option>
+                    <option>Card</option>
+                    <option>Bank Transfer</option>
+                </select>
             </div>
             <button class="btn-core" type="submit">Complete Sale</button>
         </form>
