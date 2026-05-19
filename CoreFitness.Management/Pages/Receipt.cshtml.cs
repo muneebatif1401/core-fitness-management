@@ -2,13 +2,14 @@ using CoreFitness.Management.Data;
 using CoreFitness.Management.Models;
 using CoreFitness.Management.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoreFitness.Management.Pages;
 
 [Authorize(Roles = "Admin,FuelBar")]
-public sealed class ReceiptModel(GymStore store) : PageModel
+public sealed class ReceiptModel(GymStore store, IWebHostEnvironment environment) : PageModel
 {
     public Sale? Sale { get; private set; }
     public bool AutoPrint { get; private set; }
@@ -43,7 +44,8 @@ public sealed class ReceiptModel(GymStore store) : PageModel
             return Forbid();
         }
 
-        var pdf = ReceiptPdfBuilder.Build(sale);
+        var logoPath = Path.Combine(environment.WebRootPath, "img", "core-fitness-logo.png");
+        var pdf = ReceiptPdfBuilder.Build(sale, logoPath);
         return File(pdf, "application/pdf", $"core-fitness-{sale.Outlet.ToLowerInvariant()}-{sale.Id.ToString()[..8]}.pdf");
     }
 
